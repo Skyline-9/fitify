@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "fitify",
     "name": "fitify",
     "slug": "fitify",
     "version": "1.0.0",
@@ -13,13 +14,15 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/12e238cc-65ba-48a3-8226-c754d597465f"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thedarkfox.fitify"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +32,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "12e238cc-65ba-48a3-8226-c754d597465f"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
