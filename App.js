@@ -1,35 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import {Colors, LoaderScreen} from "react-native-ui-lib";
-import { NavigationContainer } from '@react-navigation/native';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import React from "react";
+import AppNavigator from "./src/navigation/AppNavigator";
+import {AuthProvider} from "./src/provider/AuthProvider";
+import {LogBox} from "react-native";
 
-//Screens
-import HomeScreen from "./src/screens/Home";
-import ProfileScreen from "./src/screens/ProfileScreen";
+export default function App(props) {
+    const images = [
+        require("./assets/icon.png"),
+        require("./assets/splash.png"),
+        require("./assets/login.png"),
+        require("./assets/register.png"),
+        require("./assets/forget.png"),
+    ];
 
-const Stack = createNativeStackNavigator();
+    // Ignore firebase v9 AsyncStorage warning
+    React.useEffect(() => {
+        LogBox.ignoreLogs([
+            "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
+        ]);
+    }, []);
 
-export default function App() {
-  return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: 'Welcome' }}
-          />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-  );
+    return (
+        <AuthProvider>
+            <AppNavigator/>
+        </AuthProvider>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
