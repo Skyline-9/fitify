@@ -56,10 +56,10 @@ export default function ({navigation}) {
                         keyboardType="email-address"
                         onChangeText={(text) => setEmail(text)}
                         enableErrors
-                        validationMessage={['Email is required', 'Email is invalid']}
+                        validationMessage={["Email is required", "Email is invalid"]}
                         validationMessageStyle={Typography.text90R}
                         validationMessagePosition={TextField.validationMessagePositions.BOTTOM}
-                        validate={['required', 'email']}
+                        validate={["required", "email"]}
                         validateOnChange
                         validateOnBlur
                         fieldStyle={styles.withUnderline}
