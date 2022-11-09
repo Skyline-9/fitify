@@ -25,7 +25,7 @@ export default class NavigationBar extends React.Component<any> {
                     },
                     {
                         iconSource: search, iconStyle: {width: 25, height: 25}, onPress: () => {
-                            Alert.alert("search");
+                            navigation.navigate("Search");
                         }
                     },
                     {

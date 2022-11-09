@@ -18,6 +18,8 @@ import ForgetPassword from "../screens/auth/ForgetPassword";
 import Loading from "../screens/utils/Loading";
 import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/ProfileScreen";
+import SearchScreen from "../screens/SearchScreen";
+
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {
@@ -56,9 +58,9 @@ const MainStack = createNativeStackNavigator();
 const Main = () => {
     return (
         <MainStack.Navigator
-            // screenOptions={{
-            //     headerShown: false,
-            // }}
+            screenOptions={{
+                headerShown: false,
+            }}
         >
             <MainStack.Screen
                 name="Home"
@@ -66,6 +68,7 @@ const Main = () => {
                 options={{title: 'Welcome'}}
             />
             <MainStack.Screen name="Profile" component={ProfileScreen}/>
+            <MainStack.Screen name="Search" component={SearchScreen}/>
         </MainStack.Navigator>
     );
 };
