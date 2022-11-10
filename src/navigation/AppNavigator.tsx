@@ -19,7 +19,7 @@ import Loading from "../screens/utils/Loading";
 import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
-
+import AddScreen from "../screens/AddScreen";
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {
@@ -69,6 +69,7 @@ const Main = () => {
             />
             <MainStack.Screen name="Profile" component={ProfileScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen}/>
+            <MainStack.Screen name="Add" component={AddScreen}/>
         </MainStack.Navigator>
     );
 };

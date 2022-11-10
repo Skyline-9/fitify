@@ -3,7 +3,9 @@ import NavigationBar from "../components/NavigationBar";
 
 const SearchScreen = ({navigation, route}) => {
     return (<View flex>
-        <Text>This is search screen</Text>
+        <View flex center>
+            <Text>This is search screen</Text>
+        </View>
         <NavigationBar navigation={navigation}/>
     </View>);
 };
