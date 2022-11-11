@@ -1,14 +1,7 @@
 import React, {useContext} from "react";
-import {getApps, initializeApp} from "firebase/app";
-import {initializeFirestore} from 'firebase/firestore';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {AuthContext} from "../provider/AuthProvider";
-import CreatePostScreen from "../screens/CreatePostScreen";
-
-// Environmental variables
-// @ts-ignore
-import {API_KEY, APP_ID, AUTH_DOMAIN, DATABASE_URL, MESSAGING_SENDER_ID, PROJECT_ID, STORAGE_BUCKET} from "@env"
 
 // Auth screens
 import Login from "../screens/auth/Login";
@@ -20,23 +13,7 @@ import Loading from "../screens/utils/Loading";
 import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
-import AddScreen from "../screens/CreatePostScreen";
-
-// Better put your these secret keys in .env file
-const firebaseConfig = {
-    apiKey: API_KEY,
-    authDomain: AUTH_DOMAIN,
-    databaseURL: DATABASE_URL,
-    projectId: PROJECT_ID,
-    storageBucket: STORAGE_BUCKET,
-    messagingSenderId: MESSAGING_SENDER_ID,
-    appId: APP_ID,
-};
-
-if (getApps().length === 0) {
-    const app = initializeApp(firebaseConfig);
-    initializeFirestore(app, {experimentalForceLongPolling: true})
-}
+import CreatePostScreen from "../screens/CreatePostScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -60,7 +37,7 @@ const Main = () => {
     return (
         <MainStack.Navigator
             screenOptions={{
-                headerShown: false,
+                headerBackVisible: false
             }}
         >
             <MainStack.Screen
