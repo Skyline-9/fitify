@@ -64,17 +64,6 @@ export default class NavigationBar extends React.Component<any> {
                         }
                     ]}
                 />
-                {/* <Button
-                    iconSource={add}
-                    outline enableShadow
-                    color={Colors.blue1}
-                    outlineColor={Colors.blue1}
-                    marginT-100
-                    style={{position: 'absolute', width: 60, height: 60, left: 190, right: 0, bottom: 60}}
-                    round
-                    onPress={() => navigation.navigate("Add")}
-                >
-                </Button> */}
             </View>
         );
     };

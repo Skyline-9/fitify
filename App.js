@@ -1,5 +1,6 @@
 import React from "react";
 import AppNavigator from "./src/navigation/AppNavigator";
+import {DBProvider} from "./src/provider/DBProvider";
 import {AuthProvider} from "./src/provider/AuthProvider";
 import {LogBox} from "react-native";
 
@@ -20,8 +21,10 @@ export default function App(props) {
     }, []);
 
     return (
-        <AuthProvider>
-            <AppNavigator/>
-        </AuthProvider>
+        <DBProvider>
+            <AuthProvider>
+                <AppNavigator/>
+            </AuthProvider>
+        </DBProvider>
     );
 }

@@ -1,16 +1,16 @@
-import {useEffect, useState} from "react";
+import firebase from "firebase/compat";
+import {useContext, useEffect, useState} from "react";
 import {Alert, ScrollView} from "react-native";
 import {Button, View, Image, TouchableOpacity, Text, Colors, Card} from "react-native-ui-lib";
+import {DBContext} from "../provider/DBProvider";
 import NavigationBar from "../components/NavigationBar";
-import {getDownloadURL, getStorage, listAll, ref, uploadBytesResumable} from "firebase/storage";
+// import {getDownloadURL, getStorage, listAll, ref, uploadBytesResumable} from "firebase/storage";
+import {collection, getDocs} from "firebase/firestore";
 
-import * as ImagePicker from "expo-image-picker";
+import _ from "lodash";
+import posts from "../data/posts";
 
 const HomeScreen = ({navigation}) => {
-
-    let [imageList, setImageList] = useState(["https://firebasestorage.googleapis.com/v0/b/first-app-cd134.appspot.com/o/PERFECT-SERIES_LUNGE-HORIZONTAL_GRAIN.webp?alt=media&token=1a4a7dcc-1556-484c-87a4-220a4288cdb9",
-                                                "https://firebasestorage.googleapis.com/v0/b/first-app-cd134.appspot.com/o/pLaRi5jXSHDKu6WRydetBo-1200-80.jpg?alt=media&token=e473072f-7ca8-40d8-908a-33fb7461bd61"])
-
 
     // useEffect(() => {
     //     listAll(storageRef).then((response) => {
@@ -22,70 +22,87 @@ const HomeScreen = ({navigation}) => {
     //     });
     // });
 
+    //-------------- API Calls -------------------------
+    const dbContext = useContext(DBContext);
+    const db = dbContext.db;
+
+
+    useEffect(() => {
+        const getAllPosts = async () => {
+            const querySnapshot = await getDocs(collection(db, "posts"));
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+            });
+        };
+
+        console.log("Starting firebase conection...");
+        getAllPosts();
+    });
+
+    //-------------- UI Methods ------------------------
+    /**
+     * renderCards() reads data from posts in ../data/posts and then maps them to a list of cards
+     */
+    const renderCards = () => {
+        return _.map(posts, (post, i) => {
+            const statusColor = post.status === "Published" ? Colors.$textSuccess : Colors.$textMajor;
+
+            return (
+                <Card
+                    key={i}
+                    style={{marginBottom: 15}}
+                    onPress={() => console.log("press on a card")}
+                >
+                    <Card.Section
+                        imageSource={{uri: post.coverImage}}
+                        imageStyle={{height: 160}}
+                    />
+
+                    <View padding-20>
+                        <Text text40 $textDefault>
+                            {post.title}
+                        </Text>
+                        <View row>
+                            <Text text90 color={statusColor}>
+                                {post.status}
+                            </Text>
+                            <Text text90 $textDefault> | {post.timestamp}</Text>
+                        </View>
+
+                        <Text text70 $textDefault>
+                            {post.description}
+                        </Text>
+
+                        <View>
+                            <Text text90 $textDisabled>
+                                {post.likes} Likes
+                            </Text>
+                            <View row right>
+                                <Button
+                                    style={{marginRight: 10}}
+                                    text90
+                                    link
+                                    // iconSource={featureIcon}
+                                    label="Feature"
+                                />
+                                <Button text90 link /* iconSource={shareIcon} */ label="Share"/>
+                            </View>
+                        </View>
+                    </View>
+                </Card>
+            );
+        });
+    };
+
     return (
         <View flex>
-            
-            <ScrollView pagingEnabled showsHorizontalScrollIndicator={false} width='80%' style={{marginLeft: '10%', marginTop: '30%'}}>
-            <Card
-                key={0}
-                style={{marginBottom: 15}}
-                onPress={() => console.log("press on a card")}
+
+            <ScrollView showsVerticalScrollIndicator={false}
+                        style={{marginLeft: "10%", paddingTop: "10%", width: "80%"}}
             >
-                {imageList.map(url => (
-                    <View>
-                        <Card.Section
-                    imageSource={{uri: url}}
-                    imageStyle={{height: 160}}
-                />
-
-                <View padding-20>
-                    <Text text40 $textDefault>
-                        Amazing Desert
-                    </Text>
-                    <View row>
-                        <Text text90 color={Colors.$textSuccess}>
-                            Published
-                        </Text>
-                        <Text text90 $textDefault> | {"31 August 2016"}</Text>
-                    </View>
-
-                    <Text text70 $textDefault>
-                        {"Reference this card when designing"}
-                    </Text>
-
-                    <View>
-                        <Text text90 $textDisabled>
-                            345 Likes
-                        </Text>
-                        <View row right>
-                            <Button
-                                style={{marginRight: 10}}
-                                text90
-                                link
-                                label="Feature"
-                            />
-                            <Button text90 link label="Share"/>
-                        </View>
-                    </View>
-                </View>
-                    </View>
-                    
-                ))}
-            </Card>
-                {/* <TouchableOpacity activeOpacity={1} style={{marginBottom: 30, marginLeft: 20}}>
-                    {imageList.map(url => (
-                        <View key={url} style={{
-                            marginTop: 10,
-                            padding: 15,
-                            backgroundColor: "#eee"
-                        }}>{console.log("URL", url)}
-                            <Image
-                                imageSource={{
-                                    "uri": url,
-                                }}/>
-                        </View>
-                    ))}
-                </TouchableOpacity> */}
+                {renderCards()}
+                <View style={{height: 150}}/>
             </ScrollView>
             <NavigationBar navigation={navigation}/>
         </View>
