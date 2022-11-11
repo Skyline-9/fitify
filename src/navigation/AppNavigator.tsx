@@ -4,6 +4,7 @@ import {initializeFirestore} from 'firebase/firestore';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {AuthContext} from "../provider/AuthProvider";
+import CreatePostScreen from "../screens/CreatePostScreen";
 
 // Environmental variables
 // @ts-ignore
@@ -17,9 +18,9 @@ import ForgetPassword from "../screens/auth/ForgetPassword";
 //Main
 import Loading from "../screens/utils/Loading";
 import HomeScreen from "../screens/Home";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../screens/CreatePostScreen";
 import SearchScreen from "../screens/SearchScreen";
-import AddScreen from "../screens/AddScreen";
+import AddScreen from "../screens/ProfileScreen";
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {
@@ -69,7 +70,7 @@ const Main = () => {
             />
             <MainStack.Screen name="Profile" component={ProfileScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen}/>
-            <MainStack.Screen name="Add" component={AddScreen}/>
+            <MainStack.Screen name="Add" component={CreatePostScreen}/>
         </MainStack.Navigator>
     );
 };
