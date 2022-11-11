@@ -18,9 +18,9 @@ import ForgetPassword from "../screens/auth/ForgetPassword";
 //Main
 import Loading from "../screens/utils/Loading";
 import HomeScreen from "../screens/Home";
-import ProfileScreen from "../screens/CreatePostScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
-import AddScreen from "../screens/ProfileScreen";
+import AddScreen from "../screens/CreatePostScreen";
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {

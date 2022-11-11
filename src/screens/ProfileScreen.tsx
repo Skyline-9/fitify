@@ -1,7 +1,7 @@
 import {Button, View, Image, Text, Avatar, Card, Colors} from "react-native-ui-lib";
 import NavigationBar from "../components/NavigationBar";
 
-const AddScreen = ({navigation}) => {
+const ProfileScreen = ({navigation}) => {
     return (
         <View flex>
             {/* Flex view for body content */}
@@ -64,5 +64,4 @@ const AddScreen = ({navigation}) => {
     );
 };
 
-export default AddScreen;
-
+export default ProfileScreen;

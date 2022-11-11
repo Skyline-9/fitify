@@ -39,6 +39,14 @@ export default class NavigationBar extends React.Component<any> {
                             }
                         },
                         {
+                            iconSource: add,
+                            iconStyle: {width: 30, height: 30},
+                            color: Colors.blue40,
+                            onPress: () => {
+                                navigation.navigate("Add");
+                            }
+                        },
+                        {
                             iconSource: search,
                             iconStyle: {width: 30, height: 30},
                             color: Colors.blue40,
@@ -53,10 +61,10 @@ export default class NavigationBar extends React.Component<any> {
                             onPress: () => {
                                 navigation.navigate("Profile", {name: "John"});
                             }
-                        },
+                        }
                     ]}
                 />
-                <Button
+                {/* <Button
                     iconSource={add}
                     outline enableShadow
                     color={Colors.blue1}
@@ -66,7 +74,7 @@ export default class NavigationBar extends React.Component<any> {
                     round
                     onPress={() => navigation.navigate("Add")}
                 >
-                </Button>
+                </Button> */}
             </View>
         );
     };
