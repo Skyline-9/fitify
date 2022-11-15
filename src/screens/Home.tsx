@@ -1,17 +1,17 @@
-import firebase from "firebase/compat";
-import {useContext, useEffect, useState} from "react";
-import {Alert, ScrollView} from "react-native";
-import {Button, View, Image, TouchableOpacity, Text, Colors, Card} from "react-native-ui-lib";
-import {DBContext} from "../provider/DBProvider";
-import NavigationBar from "../components/NavigationBar";
 // import {getDownloadURL, getStorage, listAll, ref, uploadBytesResumable} from "firebase/storage";
 import {collection, getDocs} from "firebase/firestore";
 
 import _ from "lodash";
+import {useContext, useEffect} from "react";
+import {ScrollView} from "react-native";
+import {Button, Card, Colors, Text, View} from "react-native-ui-lib";
+import NavigationBar from "../components/NavigationBar";
 import posts from "../data/posts";
+import {DBContext} from "../provider/DBProvider";
 
 const HomeScreen = ({navigation}) => {
 
+    // TODO: I don't think we need this since we are coding the URL directly into the Firestore
     // useEffect(() => {
     //     listAll(storageRef).then((response) => {
     //         response.items.forEach((item) => {
@@ -27,16 +27,18 @@ const HomeScreen = ({navigation}) => {
     const db = dbContext.db;
 
 
+    // TODO: Use this to populate data
     useEffect(() => {
         const getAllPosts = async () => {
+            console.log("Starting firebase connection...");
             const querySnapshot = await getDocs(collection(db, "posts"));
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
                 console.log(doc.id, " => ", doc.data());
             });
+            console.log("End firebase connection");
         };
 
-        console.log("Starting firebase conection...");
         getAllPosts();
     });
 
