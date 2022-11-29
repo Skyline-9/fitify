@@ -1,54 +1,65 @@
-// import {getDownloadURL, getStorage, listAll, ref, uploadBytesResumable} from "firebase/storage";
 import {collection, getDocs} from "firebase/firestore";
 
 import _ from "lodash";
-import {useContext, useEffect} from "react";
+import {useContext, useState} from "react";
 import {ScrollView} from "react-native";
 import {Button, Card, Colors, Text, View} from "react-native-ui-lib";
 import NavigationBar from "../components/NavigationBar";
-import posts from "../data/posts";
 import {DBContext} from "../provider/DBProvider";
 
 const HomeScreen = ({navigation}) => {
 
-    // TODO: I don't think we need this since we are coding the URL directly into the Firestore
-    // useEffect(() => {
-    //     listAll(storageRef).then((response) => {
-    //         response.items.forEach((item) => {
-    //             getDownloadURL(item).then((url) => {
-    //                 setImageList((prev) => [...prev, url]);
-    //             });
-    //         });
-    //     });
-    // });
+    //-------------- Type Definitions -------------------
+    type Post = {
+        coverImage: string,
+        title: string,
+        timestamp: string,
+        description: string,
+        likes: number,
+        verified: boolean
+    }
 
     //-------------- API Calls -------------------------
     const dbContext = useContext(DBContext);
     const db = dbContext.db;
 
+    const [posts, setPosts] = useState<Post[]>();
 
-    // TODO: Use this to populate data
-    useEffect(() => {
-        const getAllPosts = async () => {
-            console.log("Starting firebase connection...");
-            const querySnapshot = await getDocs(collection(db, "posts"));
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
+    // I also tried useEffect still DDOS
+    const getAllPosts = async () => {
+        console.log("Starting firebase connection...");
+        const querySnapshot = await getDocs(collection(db, "posts"));
+
+        const newPosts = [];
+
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            const {body, comments, content_file_urls, createdAt, keywords, likes, title} = doc.data();
+            newPosts.push({
+                coverImage: content_file_urls[0],
+                title: title,
+                timestamp: new Date(createdAt.seconds * 1000).toLocaleString(),
+                description: body,
+                likes: likes,
+                verified: true
             });
-            console.log("End firebase connection");
-        };
+        });
+        console.log("End firebase connection");
 
-        getAllPosts();
-    });
+        console.log(newPosts);
+        setPosts(newPosts);
+    };
+
+    getAllPosts();
 
     //-------------- UI Methods ------------------------
     /**
-     * renderCards() reads data from posts in ../data/posts and then maps them to a list of cards
+     * renderCards() reads data from posts and then maps them to a list of cards
      */
     const renderCards = () => {
-        return _.map(posts, (post, i) => {
-            const statusColor = post.status === "Published" ? Colors.$textSuccess : Colors.$textMajor;
+        return _.map(posts, (post: Post, i) => {
+            const statusColor = post.verified ? Colors.$textSuccess : Colors.$textMajor;
 
             return (
                 <Card
@@ -67,7 +78,7 @@ const HomeScreen = ({navigation}) => {
                         </Text>
                         <View row>
                             <Text text90 color={statusColor}>
-                                {post.status}
+                                {post["createdAt"]}
                             </Text>
                             <Text text90 $textDefault> | {post.timestamp}</Text>
                         </View>
