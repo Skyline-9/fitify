@@ -1,11 +1,12 @@
 import {collection, getDocs} from "firebase/firestore";
 
 import _ from "lodash";
-import {useContext, useState} from "react";
-import {ScrollView} from "react-native";
+import {useContext, useState, useCallback, useEffect} from "react";
+import {ScrollView, RefreshControl} from "react-native";
 import {Button, Card, Colors, Text, View} from "react-native-ui-lib";
 import NavigationBar from "../components/NavigationBar";
 import {DBContext} from "../provider/DBProvider";
+import { useIsFocused } from '@react-navigation/native'
 
 const HomeScreen = ({navigation}) => {
 
@@ -25,7 +26,6 @@ const HomeScreen = ({navigation}) => {
 
     const [posts, setPosts] = useState<Post[]>();
 
-    // I also tried useEffect still DDOS
     const getAllPosts = async () => {
         console.log("Starting firebase connection...");
         const querySnapshot = await getDocs(collection(db, "posts"));
@@ -48,12 +48,27 @@ const HomeScreen = ({navigation}) => {
         console.log("End firebase connection");
 
         console.log(newPosts);
-        setPosts(newPosts);
+
+        // Make sure only new values
+        if (JSON.stringify(newPosts) !== JSON.stringify(posts)) setPosts(newPosts);
+        setRefreshing(false);
     };
 
     getAllPosts();
 
+    useEffect(() => {
+        getAllPosts();
+    } , [useIsFocused()])
+
+
     //-------------- UI Methods ------------------------
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getAllPosts();
+    }, []);
+
     /**
      * renderCards() reads data from posts and then maps them to a list of cards
      */
@@ -80,7 +95,7 @@ const HomeScreen = ({navigation}) => {
                             <Text text90 color={statusColor}>
                                 {post["createdAt"]}
                             </Text>
-                            <Text text90 $textDefault> | {post.timestamp}</Text>
+                            <Text text90 $textDefault>{post.timestamp}</Text>
                         </View>
 
                         <Text text70 $textDefault>
@@ -114,6 +129,10 @@ const HomeScreen = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}
                         style={{marginLeft: "10%", paddingTop: "10%", width: "80%"}}
             >
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
                 {renderCards()}
                 <View style={{height: 150}}/>
             </ScrollView>
