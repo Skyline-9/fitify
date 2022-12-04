@@ -16,8 +16,8 @@ const CreatePostScreen = ({navigation, route}) => {
     const filters = [
         {label: 'bench press', value: 0},
         {label: 'biceps', value: 1},
-        {label: 'Published', value: 2},
-        {label: 'Scheduled', value: 3}, 
+        {label: 'lunges', value: 2},
+        {label: 'squats', value: 3}, 
       ];
     
     const pickImage = async () => {
