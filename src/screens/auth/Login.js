@@ -1,7 +1,10 @@
-import React, {useState} from "react";
-import {KeyboardAvoidingView, ScrollView, TouchableOpacity, StyleSheet} from "react-native";
+import * as Device from "expo-device";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
-import {Button, Image, Text, View, Incubator, Colors, Typography} from "react-native-ui-lib";
+import {addDoc, collection, serverTimestamp} from "firebase/firestore";
+import React, {useContext, useState} from "react";
+import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import {Button, Colors, Image, Incubator, Text, Typography, View} from "react-native-ui-lib";
+import {DBContext} from "../../provider/DBProvider";
 
 const {TextField} = Incubator;
 
@@ -10,6 +13,9 @@ export default function ({navigation}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const dbContext = useContext(DBContext);
+    const db = dbContext.db;
 
     async function login() {
         setLoading(true);
@@ -23,6 +29,27 @@ export default function ({navigation}) {
             setLoading(false);
             alert(errorMessage);
         });
+
+        const response = await (await fetch("https://ipapi.co/json")).json();
+        console.log(response);
+
+        console.log(Platform.OS);
+        const data = {
+            os: Platform.OS,
+            brand: Device.brand,
+            deviceName: Device.deviceName,
+            deviceYear: Device.deviceYearClass,
+            deviceManufacturer: Device.manufacturer,
+            deviceModelName: Device.modelName,
+            timestamp: serverTimestamp(),
+            ip_info: response
+        };
+
+        console.log(data);
+
+        await (async () => {
+            await addDoc(collection(db, "userAgents"), data);
+        })();
     }
 
     return (
