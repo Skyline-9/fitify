@@ -75,7 +75,6 @@ const HomeScreen = ({navigation}) => {
     const renderCards = () => {
         return _.map(posts, (post: Post, i) => {
             const statusColor = post.verified ? Colors.$textSuccess : Colors.$textMajor;
-
             return (
                 <Card
                     key={i}
