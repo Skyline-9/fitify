@@ -28,13 +28,17 @@ const ProfileScreen = ({navigation}) => {
         const query_ios = query(collection(db, "userAgents"), where("os", "==", "ios"));
         const query_android = query(collection(db, "userAgents"), where("os", "==", "android"));
 
-        (async () => {
+        const getAnalytics = async () => {
             const ios_snapshot = await getCountFromServer(query_ios);
             const android_snapshot = await getCountFromServer(query_android);
 
             setiOSCount(ios_snapshot.data().count);
             setAndroidCount(android_snapshot.data().count);
-        })();
+            console.log("Polling analytics");
+        };
+
+        getAnalytics();
+        const getAnalyticsInterval = setInterval(getAnalytics, 30000);
 
         const uid = getAuth().currentUser.uid;
         (async () => {
@@ -42,6 +46,8 @@ const ProfileScreen = ({navigation}) => {
             setIsTrainer(isVerifiedTrainer);
             setPhotoURL(photoURL);
         })();
+
+        return () => clearInterval(getAnalyticsInterval);
     }, []);
 
     return (

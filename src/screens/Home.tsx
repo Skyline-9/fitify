@@ -1,12 +1,17 @@
+// Database
+import {useIsFocused} from "@react-navigation/native";
 import {collection, getDocs} from "firebase/firestore";
 
 import _ from "lodash";
-import {useContext, useState, useCallback, useEffect} from "react";
-import {ScrollView, RefreshControl} from "react-native";
+
+// React Hooks
+import {useCallback, useContext, useEffect, useState} from "react";
+
+// UI
+import {RefreshControl, ScrollView} from "react-native";
 import {Button, Card, Colors, Text, View} from "react-native-ui-lib";
 import NavigationBar from "../components/NavigationBar";
 import {DBContext} from "../provider/DBProvider";
-import { useIsFocused } from '@react-navigation/native'
 
 const HomeScreen = ({navigation}) => {
 
@@ -27,14 +32,12 @@ const HomeScreen = ({navigation}) => {
     const [posts, setPosts] = useState<Post[]>();
 
     const getAllPosts = async () => {
-        console.log("Starting firebase connection...");
         const querySnapshot = await getDocs(collection(db, "posts"));
 
         const newPosts = [];
 
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
             const {body, comments, content_file_urls, createdAt, keywords, likes, title} = doc.data();
             newPosts.push({
                 coverImage: content_file_urls[0],
@@ -45,9 +48,6 @@ const HomeScreen = ({navigation}) => {
                 verified: true
             });
         });
-        console.log("End firebase connection");
-
-        console.log(newPosts);
 
         // Make sure only new values
         if (JSON.stringify(newPosts) !== JSON.stringify(posts)) setPosts(newPosts);
@@ -58,7 +58,7 @@ const HomeScreen = ({navigation}) => {
 
     useEffect(() => {
         getAllPosts();
-    } , [useIsFocused()])
+    }, [useIsFocused()]);
 
 
     //-------------- UI Methods ------------------------
@@ -125,7 +125,6 @@ const HomeScreen = ({navigation}) => {
 
     return (
         <View flex>
-
             <ScrollView showsVerticalScrollIndicator={false}
                         style={{marginLeft: "10%", paddingTop: "10%", width: "80%"}}
             >
