@@ -1,19 +1,19 @@
-import React, {useContext} from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import React, {useContext} from "react";
 import {AuthContext} from "../provider/AuthProvider";
+import ForgetPassword from "../screens/auth/ForgetPassword";
 
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
-import ForgetPassword from "../screens/auth/ForgetPassword";
-
-//Main
-import Loading from "../screens/utils/Loading";
+import CreatePostScreen from "../screens/CreatePostScreen";
 import HomeScreen from "../screens/Home";
 import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
-import CreatePostScreen from "../screens/CreatePostScreen";
+
+//Main
+import Loading from "../screens/utils/Loading";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -37,13 +37,13 @@ const Main = () => {
     return (
         <MainStack.Navigator
             screenOptions={{
-                headerBackVisible: false
+                headerBackVisible: false,
             }}
         >
             <MainStack.Screen
                 name="Home"
                 component={HomeScreen}
-                options={{title: 'Welcome'}}
+                options={{title: "Welcome"}}
             />
             <MainStack.Screen name="Profile" component={ProfileScreen}/>
             <MainStack.Screen name="Search" component={SearchScreen}/>

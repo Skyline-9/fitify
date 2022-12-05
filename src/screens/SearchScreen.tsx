@@ -4,7 +4,7 @@ import {collection, getDocs, query, where} from "firebase/firestore";
 import _ from "lodash";
 import React, {useContext, useEffect, useState} from "react";
 import {ScrollView, TextInput} from "react-native";
-import {Button, Card, Text, View} from "react-native-ui-lib";
+import {Button, Card, Colors, Text, View} from "react-native-ui-lib";
 import NavigationBar from "../components/NavigationBar";
 import {DBContext} from "../provider/DBProvider";
 
@@ -55,6 +55,8 @@ const SearchScreen = ({navigation, route}) => {
         // urlList = [{"body": "ok plz work", "content_file_urls": ["https://firebasestorage.googleapis.com/v0/b/first-app-cd134.appspot.com/o/301DEE60-66B9-4A1F-A39B-470535DEDE95.jpg?alt=media&token=328dd414-c9ef-480a-9f9e-a68d34b3523a"], "createdAt": [Object], "keywords": ["bench press"], "likes": 472, "owner_uid": "j7R0JCRToGUC9MwhV3CmjMKJijl2", "title": "test2"}, {"body": "omg", "content_file_urls": ["https://firebasestorage.googleapis.com/v0/b/first-app-cd134.appspot.com/o/5E991E98-004F-48D3-A9E2-A533C8576A30.jpg?alt=media&token=4fb3f7bf-ad6d-4148-986d-0f50f00bfafa"], "createdAt": [Object], "keywords": ["bench press", "biceps"], "likes": 472, "owner_uid": "j7R0JCRToGUC9MwhV3CmjMKJijl2", "title": "plz work"}]
 
         return _.map(urlL, (post: Post, i) => {
+            const statusColor = post.verified ? Colors.$textSuccess : Colors.$textMajor;
+
             return (
                 <Card
                     key={i}
@@ -70,12 +72,13 @@ const SearchScreen = ({navigation, route}) => {
                         <Text text40 $textDefault>
                             {post["title"]}
                         </Text>
-                        {/* <View row>
-                        <Text text90 color={ Colors.$textMajor}>
-                            {post["createdAt"].toString()}
-                        </Text>
-                        <Text text90 $textDefault>{post["createdAt"].toString()}</Text>
-                    </View> */}
+                        <View row>
+                            <Text text90 color={statusColor}>
+                                {post.verified ? "Verified | " : "Unverified | "}
+                            </Text>
+                            <Text text90
+                                  $textDefault>{new Date(post["createdAt"].seconds * 1000).toLocaleString()}</Text>
+                        </View>
 
                         <Text text70 $textDefault>
                             {post["body"]}

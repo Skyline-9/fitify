@@ -5,7 +5,7 @@ import {collection, getDocs} from "firebase/firestore";
 import _ from "lodash";
 
 // React Hooks
-import {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // UI
 import {RefreshControl, ScrollView} from "react-native";
@@ -38,14 +38,14 @@ const HomeScreen = ({navigation}) => {
 
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            const {body, comments, content_file_urls, createdAt, keywords, likes, title} = doc.data();
+            const {body, comments, content_file_urls, createdAt, keywords, likes, title, verified} = doc.data();
             newPosts.push({
                 coverImage: content_file_urls[0],
                 title: title,
                 timestamp: new Date(createdAt.seconds * 1000).toLocaleString(),
                 description: body,
                 likes: likes,
-                verified: true
+                verified: verified
             });
         });
 
@@ -92,7 +92,7 @@ const HomeScreen = ({navigation}) => {
                         </Text>
                         <View row>
                             <Text text90 color={statusColor}>
-                                {post["createdAt"]}
+                                {post.verified ? "Verified | " : "Unverified | "}
                             </Text>
                             <Text text90 $textDefault>{post.timestamp}</Text>
                         </View>

@@ -1,17 +1,14 @@
-import {ScrollView} from "react-native-gesture-handler";
-import {
-    Text, View, FloatingButtonProps, PickerProps, Picker, Icon, Colors,
-    PickerMethods, Button, Incubator, PanningProvider, Typography
-} from "react-native-ui-lib";
-import {DBContext} from "../provider/DBProvider";
-import NavigationBar from "../components/NavigationBar";
 import * as ImagePicker from "expo-image-picker";
-import {getDownloadURL, getStorage, listAll, ref, uploadBytesResumable} from "firebase/storage";
-import {getFirestore, collection, addDoc, serverTimestamp} from "firebase/firestore";
 import {getAuth} from "firebase/auth";
-import React, {useContext, useEffect, useState} from "react";
+import {addDoc, collection, serverTimestamp} from "firebase/firestore";
+import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
 import _ from "lodash";
+import React, {useContext, useState} from "react";
 import {KeyboardAvoidingView} from "react-native";
+import {ScrollView} from "react-native-gesture-handler";
+import {Button, Colors, Incubator, PanningProvider, Picker, Text, View} from "react-native-ui-lib";
+import NavigationBar from "../components/NavigationBar";
+import {DBContext} from "../provider/DBProvider";
 
 const {TextField} = Incubator;
 
@@ -27,6 +24,13 @@ const CreatePostScreen = ({navigation, route}) => {
     const options = [
         {label: "bench press", value: "bench press"},
         {label: "biceps", value: "biceps"},
+        {label: "calf", value: "calf"},
+        {label: "cardio", value: "cardio"},
+        {label: "core", value: "core"},
+        {label: "quads", value: "quads"},
+        {label: "triceps", value: "triceps"},
+        {label: "lats", value: "lats"},
+        {label: "home", value: "home"},
     ];
     const [selectedKeywords, setSelectedKeywords] = useState<any>([]);
 
@@ -91,9 +95,10 @@ const CreatePostScreen = ({navigation, route}) => {
                 height="45%"
                 bottom
                 // useSafeArea
+                showSearch
                 containerStyle={{backgroundColor: Colors.$backgroundDefault}}
                 direction={PanningProvider.Directions.DOWN}
-                headerProps={{title: "Custom modal"}}
+                headerProps={{title: "Select Keywords"}}
             >
                 <ScrollView>{children}</ScrollView>
             </Incubator.Dialog>
@@ -107,16 +112,22 @@ const CreatePostScreen = ({navigation, route}) => {
             }}
             scrollEnabled={false}
         >
+            <Text text60M center style={{marginTop: 40}}> Create Post</Text>
+            <Text center grey20 style={{width: "80%", marginLeft: "10%"}}>Pick an image, select the keywords for your
+                post
+                (e.g. calf, bicep), write the title and
+                description, then post!</Text>
             <Button
                 backgroundColor={Colors.blue40}
                 label="Pick image"
                 labelStyle={{fontWeight: "600"}}
-                style={{marginBottom: 20, marginTop: 100, width: "80%", marginLeft: "10%"}}
+                style={{marginBottom: 20, marginTop: 30, width: "50%", marginLeft: "25%"}}
                 enableShadow
                 onPress={pickImage}
             />
 
             <View center>
+                <Text center>Keywords</Text>
                 {/*
             // @ts-ignore */}
                 <Picker
@@ -134,9 +145,10 @@ const CreatePostScreen = ({navigation, route}) => {
                     {_.map(options, option => <Picker.Item key={option.value} value={option} label={""}/>)}
                 </Picker>
                 {_.map(selectedKeywords, keyword => <Text>{keyword}</Text>)}
+                <Text center>Enter post title</Text>
                 <TextField
                     marginT-15
-                    placeholder="Enter post title"
+                    placeholder="post title"
                     value={title}
                     autoCapitalize="none"
                     autoCompleteType="off"
@@ -144,10 +156,17 @@ const CreatePostScreen = ({navigation, route}) => {
                     useGestureHandlerInput
                     onChangeText={(text) => setTitle(text)}
                     enableErrors
+                    fieldStyle={{
+                        borderBottomWidth: 1,
+                        borderColor: Colors.grey40,
+                        paddingBottom: 4,
+                        width: "60%"
+                    }}
                 />
+                <Text center>Enter Post Description</Text>
                 <TextField
                     marginT-15
-                    placeholder="Enter post description"
+                    placeholder="post description"
                     value={description}
                     autoCapitalize="none"
                     autoCompleteType="off"
@@ -155,6 +174,12 @@ const CreatePostScreen = ({navigation, route}) => {
                     useGestureHandlerInput
                     onChangeText={(text) => setDescription(text)}
                     enableErrors
+                    fieldStyle={{
+                        borderBottomWidth: 1,
+                        borderColor: Colors.grey40,
+                        paddingBottom: 4,
+                        width: "60%"
+                    }}
                 />
             </View>
             <Button
