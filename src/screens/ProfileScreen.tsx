@@ -2,7 +2,7 @@
 import {getAuth} from "firebase/auth";
 import {collection, doc, getCountFromServer, getDoc, query, where} from "firebase/firestore";
 import {useContext, useEffect, useState} from "react";
-import {Avatar, Card, Colors, Icon, Text, View} from "react-native-ui-lib";
+import {Avatar, Button, ButtonSize, Card, Colors, Icon, Text, View} from "react-native-ui-lib";
 import add from "../../assets/icons/add.png";
 
 // Assets
@@ -67,6 +67,16 @@ const ProfileScreen = ({navigation}) => {
                     <Text marginL-20 text60 centerV>You</Text>
                     <Text marginL-20 text1 centerV grey40>8.8M Followers</Text>
                 </View>
+                <Button label={"Sign out"}
+                        enableShadow
+                        marginR-15
+                        size={ButtonSize.small}
+                        backgroundColor={Colors.red30}
+                        onPress={() => {
+                            getAuth().signOut().then(() => {
+                                console.log("Signed out");
+                            });
+                        }}/>
             </View>
             <Text marginT-10 text20BO marginL-25>Perfect Leg Day</Text>
             <Card
