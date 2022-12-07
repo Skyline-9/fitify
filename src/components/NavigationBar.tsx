@@ -1,6 +1,5 @@
 import React from "react";
-import {Alert} from "react-native";
-import {ActionBar, Button, ButtonSize, Image, View, Colors} from "react-native-ui-lib";
+import {ActionBar, Colors, View} from "react-native-ui-lib";
 import add from "../../assets/icons/add.png";
 import bookmark from "../../assets/icons/bookmark.png";
 
